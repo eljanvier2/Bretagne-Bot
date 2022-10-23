@@ -55,13 +55,13 @@ while True:
         tweets = client.search_recent_tweets(query=query, tweet_fields=[
                                              'context_annotations', 'created_at'], max_results=10)
     if tweets.data is not None:
-        """ file = open(paths[randrange(0, 5)], 'rb')
+        file = open(paths[randrange(0, 5)], 'rb')
         r1 = api.media_upload(filename="gif" + str(randrange(0,1999)), file=file)
-        media_ids = [r1.media_id_string] """
+        media_ids = [r1.media_id_string]
         for tweet in tweets.data:
             print(tweet.text)
             try:
-                response = poster.create_tweet(text=phrases[randrange(0, 17)], in_reply_to_tweet_id=tweet.id)
+                response = poster.create_tweet(text=phrases[randrange(0, 17)], in_reply_to_tweet_id=tweet.id, media_ids=media_ids)
             except Exception as e:
                 print(e)
     timestamp = time.time()
