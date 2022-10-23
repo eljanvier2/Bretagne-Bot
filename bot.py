@@ -28,8 +28,8 @@ phrases = ["Salut! Pas mal ton tweet! Mais si je peux me permettre il serait enc
 paths = ["./gifs/1.gif", "./gifs/2.gif", "./gifs/3.gif",
     "./gifs/4.gif", "./gifs/5.gif", "./gifs/6.gif"]
 
-auth = tweepy.OAuthHandler(os.getenv("consumer_key"),
-                           os.getenv("consumer_secrets"),)
+auth = tweepy.OAuthHandler(os.getenv("consumer_key"),os.getenv("consumer_secret"))
+
 auth.set_access_token(os.getenv("access_token"),
                       os.getenv("access_secret"))
 api = tweepy.API(auth)
@@ -38,15 +38,14 @@ client = tweepy.Client(
     os.getenv("bearer_token"))
 
 query = "-bretagne -kouign-aman -Finistère (from:Mediavenir OR from:EmmanuelMacron OR from:Inoxtag OR from:NetflixFR OR from:karmaaOfficiel OR from:DephaseuR OR from:LaPvlga OR from:LouisPoucineau OR from:MarxFanAccount OR from:Youridefou OR from:xSqueeZie OR from:le_egar OR from:Arkunir OR from:honeeymoooon OR from:LilianBianco OR from:_Elvince OR from:J_Bardella OR from:PatrickAdemo OR from:le_gorafi OR from:_dieuoff OR from:bon_vieux_gui)"
-poster = tweepy.Client(os.getenv("consumer_key"),
-                       os.getenv("consumer_secrets"),
-                       os.getenv("access_token"),
-                       os.getenv("access_secret"))
+poster = tweepy.Client(consumer_key=os.getenv("consumer_key"),
+                       consumer_secret=os.getenv("consumer_secret"),
+                       access_token=os.getenv("access_token"),
+                       access_token_secret=os.getenv("access_secret"))
 timestamp = time.time()
 d = datetime.fromtimestamp(timestamp)
 timeStart = d - timedelta(minutes=15)
 timeStart = rfc3339(timeStart)
-print(timeStart)
 
 while True:
     if (timeStart != ""):
@@ -56,16 +55,16 @@ while True:
         tweets = client.search_recent_tweets(query=query, tweet_fields=[
                                              'context_annotations', 'created_at'], max_results=10)
     if tweets.data is not None:
-        file = open(paths[randrange(0, 5)], 'rb')
-        r1 = api.media_upload(filename="gif" + randrange(0,1999), file=file)
-        media_ids = [r1.media_id_string]
+        """ file = open(paths[randrange(0, 5)], 'rb')
+        r1 = api.media_upload(filename="gif" + str(randrange(0,1999)), file=file)
+        media_ids = [r1.media_id_string] """
         for tweet in tweets.data:
             print(tweet.text)
             try:
-                response = poster.create_tweet(text=phrases[randrange(0, 17)], in_reply_to_tweet_id=tweet.id, media_ids=media_ids)
+                response = poster.create_tweet(text=phrases[randrange(0, 17)], in_reply_to_tweet_id=tweet.id)
             except Exception as e:
                 print(e)
     timestamp = time.time()
-    d = datetime.datetime.fromtimestamp(timestamp)
+    d = datetime.fromtimestamp(timestamp)
     timeStart = rfc3339(d)
     time.sleep(900)
