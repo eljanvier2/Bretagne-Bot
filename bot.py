@@ -3,8 +3,9 @@ from random import randrange
 import time
 from datetime import datetime, timedelta
 from rfc3339 import rfc3339
-from decouple import config
-
+from dotenv import load_dotenv
+import os
+load_dotenv()
 phrases = ["Salut! Pas mal ton tweet! Mais si je peux me permettre il serait encore mieux s'il parlait un peu plus de notre belle Bretagne! Mais pas de soucis tu pourras en parler dans ton prochain tweet j'espere...",
            "Hmmmm, pas mal, mais ça manque un peu de Bretagne!",
            "Avec un peu de Bretagne en plus ton tweet serait parfait. Pas grave, ça sera pour la prochaine fois!",
@@ -27,24 +28,24 @@ phrases = ["Salut! Pas mal ton tweet! Mais si je peux me permettre il serait enc
 paths = ["./gifs/1.gif", "./gifs/2.gif", "./gifs/3.gif",
     "./gifs/4.gif", "./gifs/5.gif", "./gifs/6.gif"]
 
-auth = tweepy.OAuthHandler(config("consumer_key"),
-                           config("consumer_secrets"),)
-auth.set_access_token(config("access_token"),
-                      config("access_secret"))
+auth = tweepy.OAuthHandler(os.getenv("consumer_key"),
+                           os.getenv("consumer_secrets"),)
+auth.set_access_token(os.getenv("access_token"),
+                      os.getenv("access_secret"))
 api = tweepy.API(auth)
 
 client = tweepy.Client(
-    config("bearer_token"))
+    os.getenv("bearer_token"))
 
 query = "-bretagne -kouign-aman -Finistère (from:Mediavenir OR from:EmmanuelMacron OR from:Inoxtag OR from:NetflixFR OR from:karmaaOfficiel OR from:DephaseuR OR from:LaPvlga OR from:LouisPoucineau OR from:MarxFanAccount OR from:Youridefou OR from:xSqueeZie OR from:le_egar OR from:Arkunir OR from:honeeymoooon OR from:LilianBianco OR from:_Elvince OR from:J_Bardella OR from:PatrickAdemo OR from:le_gorafi OR from:_dieuoff OR from:bon_vieux_gui)"
-poster = tweepy.Client(config("consumer_key"),
-                       config("consumer_secrets"),
-                       config("access_token"),
-                       config("access_secret"))
+poster = tweepy.Client(os.getenv("consumer_key"),
+                       os.getenv("consumer_secrets"),
+                       os.getenv("access_token"),
+                       os.getenv("access_secret"))
 timestamp = time.time()
 d = datetime.fromtimestamp(timestamp)
 timeStart = d - timedelta(minutes=15)
-timeStart = rfc3339(d)
+timeStart = rfc3339(timeStart)
 print(timeStart)
 
 while True:
